@@ -76,3 +76,5 @@ Here are the primary endpoints utilized across the 4 Core Memory Lifecycle opera
 
 ## 🏆 Hackathon Notes
 This project was designed specifically for the Cognee hackathon to demonstrate how Graph RAG can solve the problem of "generic AI advice" in the EdTech/Career space. By using a knowledge graph to track a user's progress, target companies, and weaknesses, **Interview Brain** creates a highly personalized, adaptive learning experience.
+
+*Note: AI tools were used to assist in writing parts of the code for this submission.*

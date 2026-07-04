@@ -5,3 +5,6 @@ requests
 httpx
 pydantic
 cognee
+python-jose
+bcrypt
+aiosqlite

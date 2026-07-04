@@ -99,6 +99,17 @@
     
     .hidden { display: none !important; }
 
+    /* AI Edit Bar */
+    .ai-edit-bar {
+      display: flex; gap: 8px; padding: 16px 24px;
+      border-top: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.02);
+      border-bottom-left-radius: 16px; border-bottom-right-radius: 16px;
+    }
+    .ai-edit-bar .form-input {
+      flex: 1; border-radius: 8px;
+    }
+    
     @media (max-width: 768px) {
       .split-layout { flex-direction: column; }
       .sidebar { width: 100%; border-right: none; border-bottom: 1px solid var(--border); max-height: 300px; }
@@ -166,6 +177,11 @@
           <div class="roadmap-body">
             <div id="roadmap-rendered"></div>
             <textarea id="roadmap-editor" class="hidden"></textarea>
+          </div>
+          
+          <div class="ai-edit-bar">
+            <input type="text" id="ai-edit-input" class="form-input" placeholder="Ask AI to modify this roadmap (e.g. 'Add more system design')">
+            <button class="btn btn-primary" id="btn-ai-edit">✨ AI Edit</button>
           </div>
         </div>
         

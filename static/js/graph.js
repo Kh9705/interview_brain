@@ -27,6 +27,29 @@ document.addEventListener('DOMContentLoaded', async () => {
     emptyEl.style.display = 'flex';
     console.error('Graph load error:', err);
   }
+
+  // Handle Memify button
+  const btnMemify = document.getElementById('btn-memify');
+  if (btnMemify) {
+    btnMemify.addEventListener('click', async () => {
+      try {
+        const originalText = btnMemify.textContent;
+        btnMemify.textContent = 'Enriching...';
+        btnMemify.disabled = true;
+        
+        await API.improveGraph();
+        
+        Toast.success('Memory improved! The Knowledge Graph was successfully memified.');
+        
+        // Reload graph
+        setTimeout(() => location.reload(), 1500);
+      } catch (err) {
+        Toast.error('Memify failed: ' + err.message);
+        btnMemify.textContent = '🧠 Enhance Graph (Memify)';
+        btnMemify.disabled = false;
+      }
+    });
+  }
 });
 
 function renderGraph(svg, rawNodes, rawEdges) {

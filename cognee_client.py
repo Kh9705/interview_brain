@@ -26,7 +26,7 @@ class CogneeClient:
         """Upload text content as a file to the /remember endpoint."""
         try:
             buf = io.BytesIO(text_content.encode("utf-8"))
-            async with httpx.AsyncClient(timeout=self._timeout) as client:
+            async with httpx.AsyncClient(timeout=self._timeout, follow_redirects=True) as client:
                 response = await client.post(
                     f"{self.base_url}/api/v1/remember",
                     headers=self._headers(),
@@ -57,7 +57,7 @@ class CogneeClient:
                 "query": query,
                 "topK": top_k,
             }
-            async with httpx.AsyncClient(timeout=self._timeout) as client:
+            async with httpx.AsyncClient(timeout=self._timeout, follow_redirects=True) as client:
                 response = await client.post(
                     f"{self.base_url}/api/v1/recall",
                     headers={**self._headers(), "Content-Type": "application/json"},
@@ -75,7 +75,7 @@ class CogneeClient:
     async def improve(self, dataset_name: str) -> dict:
         """Trigger knowledge graph improvement for a dataset."""
         try:
-            async with httpx.AsyncClient(timeout=self._timeout) as client:
+            async with httpx.AsyncClient(timeout=self._timeout, follow_redirects=True) as client:
                 response = await client.post(
                     f"{self.base_url}/api/v1/improve",
                     headers={**self._headers(), "Content-Type": "application/json"},
@@ -93,7 +93,7 @@ class CogneeClient:
     async def forget(self, dataset_name: str) -> dict:
         """Delete a dataset from Cognee."""
         try:
-            async with httpx.AsyncClient(timeout=self._timeout) as client:
+            async with httpx.AsyncClient(timeout=self._timeout, follow_redirects=True) as client:
                 response = await client.post(
                     f"{self.base_url}/api/v1/forget",
                     headers={**self._headers(), "Content-Type": "application/json"},
@@ -111,7 +111,7 @@ class CogneeClient:
     async def get_datasets(self) -> list[dict] | dict:
         """List all datasets."""
         try:
-            async with httpx.AsyncClient(timeout=self._timeout) as client:
+            async with httpx.AsyncClient(timeout=self._timeout, follow_redirects=True) as client:
                 response = await client.get(
                     f"{self.base_url}/api/v1/datasets",
                     headers=self._headers(),
@@ -128,7 +128,7 @@ class CogneeClient:
     async def get_graph(self, dataset_id: str) -> dict:
         """Retrieve the knowledge graph for a specific dataset."""
         try:
-            async with httpx.AsyncClient(timeout=self._timeout) as client:
+            async with httpx.AsyncClient(timeout=self._timeout, follow_redirects=True) as client:
                 response = await client.get(
                     f"{self.base_url}/api/v1/datasets/{dataset_id}/graph",
                     headers=self._headers(),
@@ -145,7 +145,7 @@ class CogneeClient:
     async def visualize(self, dataset_id: str) -> str:
         """Get HTML visualization for a dataset."""
         try:
-            async with httpx.AsyncClient(timeout=self._timeout) as client:
+            async with httpx.AsyncClient(timeout=self._timeout, follow_redirects=True) as client:
                 response = await client.get(
                     f"{self.base_url}/api/v1/visualize",
                     headers=self._headers(),

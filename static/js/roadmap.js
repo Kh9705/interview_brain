@@ -176,6 +176,44 @@ const RoadmapApp = (() => {
         await saveRoadmap(newContent);
       }
     });
+
+    // AI Edit Roadmap
+    document.getElementById('btn-ai-edit').addEventListener('click', async () => {
+      const inputEl = document.getElementById('ai-edit-input');
+      const prompt = inputEl.value.trim();
+      if (!prompt) return;
+      if (!currentRoadmap) return;
+      
+      const btn = document.getElementById('btn-ai-edit');
+      const originalText = btn.textContent;
+      
+      try {
+        btn.disabled = true;
+        btn.textContent = 'Editing...';
+        inputEl.disabled = true;
+        
+        // Call backend
+        const res = await API.aiEditRoadmap(currentRoadmap.id, prompt);
+        
+        // Update local state and UI
+        currentRoadmap.content = res.content;
+        const idx = roadmaps.findIndex(r => r.id === currentRoadmap.id);
+        if (idx !== -1) roadmaps[idx] = currentRoadmap;
+        
+        // Update the textarea too in case they switch to edit mode
+        document.getElementById('roadmap-editor').value = res.content;
+        renderMarkdownView();
+        
+        inputEl.value = ''; // clear
+        Toast.success('Roadmap updated by AI!');
+      } catch (err) {
+        Toast.error('AI Edit failed: ' + err.message);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = originalText;
+        inputEl.disabled = false;
+      }
+    });
   }
 
   async function saveRoadmap(newContent) {

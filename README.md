@@ -1,143 +1,78 @@
 # 🧠 Interview Brain
 
-> AI-powered interview preparation platform that **actually remembers you** — powered by [Cognee](https://cognee.ai) knowledge graphs.
+**Interview Brain** is an intelligent, personalized interview preparation platform built for the **Cognee AI Hackathon**. 
 
-Built for the [Hangover Hackathon](https://www.wemakedevs.org/hackathons/cognee) by Cognee × WeMakeDevs.
+It moves beyond generic LLM advice by leveraging **Cognee's Graph RAG** capabilities to build a persistent memory of a candidate's strengths, target companies, and weak areas. As you interact with the platform, it builds a personalized knowledge graph that dynamically influences your mock interviews and study roadmaps.
+
+![Skill Map](https://img.shields.io/badge/Knowledge_Graph-Powered_by_Cognee-1a1a2e?style=for-the-badge)
 
 ---
 
-## ✨ Features
+## 🚀 Key Features
 
-| Feature | Description |
-|---|---|
-| **🎤 Mock Interviews** | Real-time AI interviews with camera feed, speech synthesis (AI speaks questions), and speech recognition (voice answers) |
-| **💬 Smart Q&A** | Ask anything about your target companies, prep strategy, or weak areas — AI answers using your personalized knowledge graph |
-| **⚖️ Company Compare** | Side-by-side comparison of interview requirements between two companies |
-| **🗺️ Prep Roadmap** | Day-by-day study plan tailored to a specific company and your weak areas |
-| **🔮 Knowledge Graph** | Interactive D3.js visualization of your knowledge — skills, companies, topics, relationships |
-| **📊 Performance Tracking** | Track mock interview scores over time, identify patterns in weak areas |
+* **AI Mock Interviews with Voice Synthesis:** Practice real technical and behavioral questions tailored to your target companies. The AI evaluates your answer in real-time using Cognee `recall` to check your weaknesses. It even speaks to you using text-to-speech for a realistic interview feel!
+* **Dynamic Study Roadmaps:** Generates structured, day-by-day study roadmaps. Includes a **✨ AI Edit** feature—simply tell the AI how you want to adjust your plan (e.g., "Add more system design"), and it intelligently rewrites the roadmap.
+* **Skill Map Visualization:** See exactly how the AI understands your profile! We use Cognee's native visualization engine to display a live Knowledge Graph of your target companies, roles, and skills.
+* **Compare Readiness:** Instantly compare the interview requirements of two different companies to see how your current skill profile stacks up.
+* **Persistent Memory:** Everything you do is remembered. Your profile is continuously updated using Cognee's memory endpoints to ensure the AI's advice gets better over time.
 
-## 🧬 Cognee Integration (All 5 Lifecycle APIs)
+---
 
-This project uses **all 5 core Cognee memory lifecycle APIs** for deep integration:
+## 🛠️ How We Built It (Cognee Integration)
 
-| Cognee API | Endpoint | How We Use It |
-|---|---|---|
-| **remember()** | `POST /api/v1/remember` | Ingest user profiles + company interview data into knowledge graph |
-| **recall()** | `POST /api/v1/recall` | Query graph for advice, generate interview questions, evaluate answers, compare companies, build roadmaps |
-| **improve()** | `POST /api/v1/improve` | Enrich graph with mock interview feedback + performance data |
-| **forget()** | `POST /api/v1/forget` | Remove company data when user drops a target company |
-| **visualize** | `GET /api/v1/datasets/{id}/graph` | Render interactive knowledge graph with D3.js |
+This project strictly adheres to the hackathon requirements by deeply integrating the **Cognee Cloud API** into the backend architecture (FastAPI). 
 
-## 🚀 Quick Start
+Here are the primary endpoints utilized across the 4 Core Memory Lifecycle operations:
+
+1. **`POST /api/v1/remember`**: When a user registers or updates their target companies/weak areas, we format this data and send it to the `remember` endpoint. This builds a dedicated dataset for the user and maps relationships between their identity, target companies, and skills in the Knowledge Graph.
+2. **`POST /api/v1/recall`**: Used extensively throughout the app. Whether evaluating a mock interview answer, generating a custom 30-day roadmap, or performing an AI edit on an existing roadmap, we query the user's specific dataset to ensure the LLM's response is grounded in their historical data.
+3. **`POST /api/v1/improve`**: Featured natively on the Skill Map! Users can click the **🧠 Enhance Graph (Memify)** button to run post-ingestion enrichment on their dataset and adapt weights.
+4. **`POST /api/v1/forget`**: Implemented perfectly! When a user decides they no longer want to interview at a specific company (by deleting it from their dashboard), we surgically prune and delete that company's memory dataset using `forget()`.
+5. **`GET /api/v1/visualize` & `GET /api/v1/datasets`**: We fetch the user's dataset and render the live HTML visualization graph directly in the browser on the "Skill Map" page.
+
+### Tech Stack
+* **Frontend:** Vanilla HTML/CSS/JS (Lightweight, beautiful dark-mode UI)
+* **Backend:** Python, FastAPI, SQLite (Local tracking)
+* **AI Engine:** Cognee Cloud API
+
+---
+
+## 💻 Running it Locally
 
 ### Prerequisites
-- Python 3.10+
-- Cognee Cloud API key (use promo code `COGNEE-35` for free credits)
+* Python 3.10+
+* A Cognee API Key & Tenant ID
 
 ### Setup
 
-```bash
-# Clone & enter project
-cd interview-brain
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/Kh9705/interview_brain.git
+   cd interview_brain
+   ```
 
-# Install dependencies
-pip install -r requirements.txt
+2. **Install dependencies:**
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-# Configure environment
-cp .env.example .env
-# Edit .env with your COGNEE_API_KEY and JWT_SECRET
+3. **Environment Variables:**
+   Create a `.env` file in the root directory:
+   ```env
+   COGNEE_API_KEY=your_api_key_here
+   COGNEE_BASE_URL=https://tenant-XXXX.aws.cognee.ai
+   COGNEE_TENANT_ID=your_tenant_id_here
+   ```
 
-# Run
-python main.py
-```
+4. **Run the server:**
+   ```bash
+   python main.py
+   ```
 
-Visit `http://localhost:8000` → Landing page.
+5. **Open the app:**
+   Navigate to `http://localhost:8000` in your web browser.
 
-### Environment Variables
+---
 
-| Variable | Required | Description |
-|---|---|---|
-| `COGNEE_API_KEY` | ✅ | Cognee Cloud API key |
-| `COGNEE_API_URL` | ❌ | Cognee API base URL (default: `https://api.cognee.ai`) |
-| `JWT_SECRET_KEY` | ✅ | Secret for JWT token signing |
-| `DATABASE_URL` | ❌ | SQLite path (default: `interview_brain.db`) |
-
-## 🏗️ Architecture
-
-```
-User Browser (HTML/JS/CSS)
-    ↓ REST API calls
-FastAPI Backend (Python)
-    ├── SQLite (users, feedback, mock_interviews)
-    ├── JWT Auth (register, login, protected routes)
-    └── Cognee Cloud API (via httpx)
-            ├── remember() → ingest profile + company data
-            ├── recall()   → query for advice, questions, comparisons
-            ├── improve()  → enrich with feedback
-            ├── forget()   → drop company data
-            └── get_graph  → knowledge graph visualization
-```
-
-## 📁 Project Structure
-
-```
-interview-brain/
-├── main.py              # FastAPI app entry point
-├── config.py            # Environment configuration
-├── database.py          # SQLite setup (aiosqlite)
-├── models.py            # Pydantic schemas
-├── auth.py              # JWT authentication
-├── cognee_client.py     # Cognee Cloud API wrapper
-├── requirements.txt     # Python dependencies
-├── .env.example         # Environment template
-├── routes/
-│   ├── ingest.py        # POST /api/ingest (remember)
-│   ├── ask.py           # POST /api/ask (recall)
-│   ├── feedback.py      # POST/GET /api/feedback (remember)
-│   ├── profile.py       # GET /api/profile
-│   ├── mock_interview.py # Mock interview flow (recall + remember)
-│   ├── compare.py       # POST /api/compare (recall)
-│   ├── roadmap.py       # POST /api/roadmap (recall)
-│   ├── visualize.py     # GET /api/visualize (get_graph)
-│   └── company.py       # DELETE /api/company/{name} (forget)
-└── static/
-    ├── css/style.css     # Design system (dark mode, glassmorphism)
-    ├── js/
-    │   ├── api.js        # API client with JWT auth
-    │   ├── auth.js       # Login/register logic
-    │   ├── dashboard.js  # Dashboard + chat logic
-    │   ├── mock.js       # Mock interview (camera, voice, scoring)
-    │   └── graph.js      # D3.js knowledge graph
-    ├── index.html        # Landing page
-    ├── login.html        # Login
-    ├── register.html     # Multi-step registration
-    ├── dashboard.html    # Main dashboard + AI chat
-    ├── mock.html         # Mock interview screen
-    ├── results.html      # Interview results
-    └── graph.html        # Knowledge graph visualization
-```
-
-## 🎯 User Flow
-
-1. **Register** → Multi-step form: name, role, target companies, weak areas
-2. **Ingest** → Profile + company data sent to Cognee via `remember()`
-3. **Dashboard** → Chat with AI, compare companies, generate roadmaps
-4. **Mock Interview** → Camera on, AI speaks questions, user answers via voice/text
-5. **Results** → Score breakdown, feedback, memory updated via `improve()`
-6. **Knowledge Graph** → Explore your data visually
-7. **Iterate** → Each interaction enriches your Cognee knowledge graph
-
-## 🛠️ Tech Stack
-
-- **Backend**: FastAPI, SQLite (aiosqlite), httpx
-- **Auth**: JWT (python-jose), bcrypt (passlib)
-- **AI Memory**: Cognee Cloud REST API
-- **Frontend**: Vanilla HTML/CSS/JS
-- **Visualization**: D3.js v7
-- **Voice**: Web Speech API (SpeechRecognition + SpeechSynthesis)
-- **Camera**: getUserMedia API
-
-## 📜 License
-
-MIT — Built with ❤️ for the Hangover Hackathon.
+## 🏆 Hackathon Notes
+This project was designed specifically for the Cognee hackathon to demonstrate how Graph RAG can solve the problem of "generic AI advice" in the EdTech/Career space. By using a knowledge graph to track a user's progress, target companies, and weaknesses, **Interview Brain** creates a highly personalized, adaptive learning experience.

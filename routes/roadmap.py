@@ -7,7 +7,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from auth import get_current_user
 from database import get_db
 from cognee_client import cognee_client
-from models import RoadmapRequest, RoadmapResponse, RoadmapOut, RoadmapUpdateRequest, RoadmapListResponse
+from models import RoadmapRequest, RoadmapResponse, RoadmapOut, RoadmapUpdateRequest, RoadmapListResponse, RoadmapAIEditRequest
 
 router = APIRouter(prefix="/api", tags=["roadmap"])
 
@@ -143,3 +143,48 @@ async def update_roadmap(roadmap_id: str, body: RoadmapUpdateRequest, user: dict
         content=body.content,
         created_at=row["created_at"]
     )
+
+
+@router.post("/roadmap/{roadmap_id}/ai-edit", response_model=RoadmapOut)
+async def ai_edit_roadmap(roadmap_id: str, body: RoadmapAIEditRequest, user: dict = Depends(get_current_user)):
+    """Use AI to modify an existing roadmap based on a prompt."""
+    db = await get_db()
+    
+    # Verify ownership
+    cursor = await db.execute("SELECT * FROM roadmaps WHERE id = ? AND user_id = ?", (roadmap_id, user["id"]))
+    row = await cursor.fetchone()
+    if not row:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Roadmap not found")
+        
+    ai_prompt = (
+        f"Here is an existing interview prep roadmap:\n\n"
+        f"{row['content']}\n\n"
+        f"The user wants you to modify it with this instruction: {body.prompt}\n\n"
+        f"Return ONLY the updated roadmap in the exact same format (Markdown headings and checklists with '- [ ] '). "
+        f"DO NOT add any conversational filler or intro/outro. DO NOT USE TABLES."
+    )
+
+    # Use the user profile dataset as the memory bank context
+    profile_dataset = f"{user['id']}_profile"
+    
+    try:
+        result = await cognee_client.recall(profile_dataset, ai_prompt)
+        new_content = _extract_text(result)
+        
+        # Update DB
+        await db.execute(
+            "UPDATE roadmaps SET content = ? WHERE id = ?",
+            (new_content, roadmap_id)
+        )
+        await db.commit()
+        
+        return RoadmapOut(
+            id=row["id"],
+            user_id=row["user_id"],
+            company=row["company"],
+            content=new_content,
+            created_at=row["created_at"]
+        )
+    except Exception as exc:
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(exc))
+

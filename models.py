@@ -161,6 +161,10 @@ class RoadmapListResponse(BaseModel):
 class RoadmapResponse(BaseModel):
     roadmap: RoadmapOut
 
+class RoadmapAIEditRequest(BaseModel):
+    prompt: str
+
+
 
 # ── Visualize ────────────────────────────────────────────────────────────────
 

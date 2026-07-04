@@ -157,8 +157,16 @@ const API = (() => {
     return call(`/api/roadmap/${id}`, 'PUT', { content });
   }
 
+  async function aiEditRoadmap(id, prompt) {
+    return call(`/api/roadmap/${id}/ai-edit`, 'POST', { prompt });
+  }
+
   async function getGraph() {
     return call('/api/visualize');
+  }
+
+  async function improveGraph() {
+    return call('/api/improve', 'POST');
   }
 
   async function deleteCompany(name) {
@@ -172,7 +180,7 @@ const API = (() => {
     register, login, ingest, ask,
     getProfile, getFeedback, createFeedback,
     startMockInterview, evaluateAnswer, getMockHistory,
-    compare, generateRoadmap, getRoadmaps, updateRoadmap, getGraph, deleteCompany,
+    compare, generateRoadmap, getRoadmaps, updateRoadmap, aiEditRoadmap, getGraph, improveGraph, deleteCompany,
   };
 })();
 

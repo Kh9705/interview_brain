@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Interview Brain — AI-powered interview preparation that actually remembers you.">
+  <title>Interview Brain — AI Interview Prep</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+  <style>
+    .cognee-flow {
+      display: flex; align-items: center; justify-content: center;
+      gap: 12px; flex-wrap: wrap; margin-top: 24px;
+    }
+    .flow-chip {
+      padding: 10px 20px; border-radius: 999px;
+      font-size: 0.85rem; font-weight: 600;
+      background: rgba(16,185,129,0.1); color: var(--accent); border: 1px solid rgba(16,185,129,0.3);
+    }
+    .flow-arrow { color: var(--text-muted); font-size: 1.2rem; }
+    @media (max-width: 600px) {
+      .flow-arrow { display: none; }
+    }
+    .steps-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px; max-width: 1000px; margin: 0 auto;
+    }
+    .step-card {
+      padding: 28px; text-align: left; position: relative;
+      border-left: 3px solid var(--accent);
+    }
+    .step-num {
+      font-size: 2.5rem; font-weight: 800;
+      color: rgba(16,185,129,0.1); position: absolute; top: 12px; right: 16px;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-brand">
+      <div class="nav-brand-dot"></div>
+      Interview Brain
+    </div>
+    <div class="nav-links">
+      <a href="/static/login.html" class="btn btn-ghost btn-sm">Sign In</a>
+      <a href="/static/register.html" class="btn btn-primary btn-sm">Get Started</a>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-content">
+      <h1 class="hero-title">Crack your dream role with <span class="gradient-text">AI memory</span></h1>
+      <p class="hero-subtitle">
+        Your interview prep finally has a brain. Tell us your target companies and weak areas. We build a personalized map of everything you need to study, give you day-by-day roadmaps, and run live mock interviews.
+      </p>
+      <div class="hero-buttons">
+        <a href="/static/register.html" class="btn btn-primary btn-lg" id="cta-register">Start Prep for Free &rarr;</a>
+        <a href="/static/login.html" class="btn btn-secondary btn-lg" id="cta-login">Sign In</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="features">
+    <h2 class="section-title">Features</h2>
+    <div class="features-grid">
+      <div class="card feature-card">
+        <div class="feature-icon">M</div>
+        <h3 class="feature-title">Live Mock Interviews</h3>
+        <p class="feature-desc">Camera on. AI speaks questions. You answer by voice. Get scored instantly. Exactly like the real thing.</p>
+      </div>
+      <div class="card feature-card">
+        <div class="feature-icon">P</div>
+        <h3 class="feature-title">Memory That Grows</h3>
+        <p class="feature-desc">Every interaction enriches your personalized brain. The more you use it, the smarter your prep gets.</p>
+      </div>
+      <div class="card feature-card">
+        <div class="feature-icon">K</div>
+        <h3 class="feature-title">Visual Skill Map</h3>
+        <p class="feature-desc">See your entire prep as an interactive map. Skills, companies, topics — all connected.</p>
+      </div>
+      <div class="card feature-card">
+        <div class="feature-icon">C</div>
+        <h3 class="feature-title">Company vs Company</h3>
+        <p class="feature-desc">Google vs Amazon? Compare interview styles, required skills, and your readiness for each.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="features" style="background: var(--bg-secondary); padding: 80px 24px;">
+    <h2 class="section-title">How It Works</h2>
+    <div class="steps-grid">
+      <div class="card step-card">
+        <span class="step-num">01</span>
+        <h3 class="feature-title">Build Profile</h3>
+        <p class="text-secondary" style="font-size: 0.85rem;">Target roles, dream companies, weak areas. We ingest it all into Cognee.</p>
+      </div>
+      <div class="card step-card">
+        <span class="step-num">02</span>
+        <h3 class="feature-title">Ask Anything</h3>
+        <p class="text-secondary" style="font-size: 0.85rem;">"What should I study for Google?" — AI answers using your personalized brain.</p>
+      </div>
+      <div class="card step-card">
+        <span class="step-num">03</span>
+        <h3 class="feature-title">Mock Interviews</h3>
+        <p class="text-secondary" style="font-size: 0.85rem;">Camera + voice. AI generates questions from your profile and evaluates answers.</p>
+      </div>
+      <div class="card step-card">
+        <span class="step-num">04</span>
+        <h3 class="feature-title">Get Better</h3>
+        <p class="text-secondary" style="font-size: 0.85rem;">Performance feeds back into memory. Your weak spots get tracked.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="features" style="text-align: center;">
+    <h2 class="section-title">Powered by Cognee</h2>
+    <div class="cognee-flow">
+      <span class="flow-chip">remember()</span>
+      <span class="flow-arrow">&rarr;</span>
+      <span class="flow-chip">recall()</span>
+      <span class="flow-arrow">&rarr;</span>
+      <span class="flow-chip">improve()</span>
+      <span class="flow-arrow">&rarr;</span>
+      <span class="flow-chip">forget()</span>
+      <span class="flow-arrow">&rarr;</span>
+      <span class="flow-chip">visualize</span>
+    </div>
+  </section>
+
+  <footer style="text-align: center; padding: 40px; border-top: 1px solid var(--border); margin-top: 40px;">
+    <p class="text-muted" style="font-size: 0.85rem;">Interview Brain &copy; 2026. Built with Cognee.</p>
+  </footer>
+
+  <script src="/static/js/api.js" defer></script>
+</body>
+</html>

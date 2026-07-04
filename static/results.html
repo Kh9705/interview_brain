@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interview Results — Interview Brain</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+  <style>
+    .results-container {
+      max-width: 800px; margin: 0 auto; padding: 40px 24px;
+    }
+    .score-section {
+      text-align: center; margin: 40px 0;
+      animation: slideUp 0.5s ease;
+    }
+    .question-list {
+      margin-top: 40px;
+    }
+    .q-card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius-lg); margin-bottom: 16px;
+      overflow: hidden; animation: slideUp 0.6s ease;
+    }
+    .q-card-header {
+      padding: 16px 20px; background: rgba(255,255,255,0.02);
+      border-bottom: 1px solid var(--border);
+      display: flex; gap: 16px; align-items: flex-start;
+    }
+    .q-card-body { padding: 20px; }
+  </style>
+</head>
+<body>
+
+  <div class="results-container">
+    <a href="/static/dashboard.html" class="btn btn-ghost" style="padding-left:0;">&larr; Back to Dashboard</a>
+
+    <div class="score-section">
+      <h1 class="mb-1">Interview Complete</h1>
+      <p class="text-muted mb-4" id="results-subtitle">Loading results...</p>
+
+      <div class="score-circle" id="overall-score-circle" style="--score: 0;">
+        <div>
+          <div class="score-value" id="overall-score-val">0</div>
+          <div class="score-label">OVERALL</div>
+        </div>
+      </div>
+
+      <div class="mt-4">
+        <span class="badge badge-accent">Performance saved to memory</span>
+      </div>
+
+      <div class="mt-4" style="display:flex; justify-content:center; gap:12px;">
+        <a href="/static/mock.html" class="btn btn-primary">Try Again</a>
+        <a href="/static/dashboard.html" class="btn btn-secondary">Study Plan</a>
+        <a href="/static/graph.html" class="btn btn-secondary">View Graph</a>
+      </div>
+    </div>
+
+    <div class="question-list" id="question-list">
+      <h3 class="mb-3">Question Breakdown</h3>
+      <!-- Results injected here -->
+    </div>
+  </div>
+
+  <script src="/static/js/api.js" defer></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const dataStr = sessionStorage.getItem('ib_mock_results');
+      if (!dataStr) {
+        window.location.href = '/static/dashboard.html';
+        return;
+      }
+
+      const data = JSON.parse(dataStr);
+      document.getElementById('results-subtitle').textContent =
+        `Mock Interview for ${data.company} — ${data.role}`;
+
+      // Set score circle
+      const score = data.overallScore || 0;
+      document.getElementById('overall-score-circle').style.setProperty('--score', (score / 10) * 100);
+      document.getElementById('overall-score-val').textContent = score.toFixed(1);
+
+      // Render questions
+      const list = document.getElementById('question-list');
+      if (data.results && data.results.length > 0) {
+        const html = data.results.map((r, i) => {
+          const scoreClass = r.score >= 6 ? 'good' : 'bad';
+          return `
+            <div class="q-card">
+              <div class="q-card-header">
+                <div class="q-score ${scoreClass}">${r.score.toFixed(1)}</div>
+                <div>
+                  <div style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 1px;">Question ${i+1}</div>
+                  <div style="font-weight: 500;">${r.question}</div>
+                </div>
+              </div>
+              <div class="q-card-body">
+                <div class="mb-2">
+                  <div style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 4px;">Your Answer</div>
+                  <p class="text-secondary" style="font-size: 0.9rem; font-style: italic;">"${r.answer}"</p>
+                </div>
+                <div>
+                  <div style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 4px;">Feedback</div>
+                  <p style="font-size: 0.9rem;">${r.feedback}</p>
+                </div>
+              </div>
+            </div>
+          `;
+        }).join('');
+        list.innerHTML += html;
+      } else {
+        list.innerHTML += '<p class="text-muted">No answers recorded.</p>';
+      }
+    });
+  </script>
+</body>
+</html>

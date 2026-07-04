@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Skill Map — Interview Brain</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+  <div class="graph-container">
+    
+    <div class="graph-header">
+      <div>
+        <a href="/static/dashboard.html" class="btn btn-ghost btn-sm" style="padding-left:0;">&larr; Dashboard</a>
+        <h1 style="font-size: 1.2rem; display: inline-block; margin-left: 12px; border-left: 1px solid var(--border); padding-left: 16px;">Skill Map</h1>
+      </div>
+      <span class="badge badge-accent">Powered by Cognee</span>
+    </div>
+
+    <!-- D3 Container -->
+    <svg id="graph-svg" class="graph-svg"></svg>
+
+    <!-- Loading State -->
+    <div id="graph-loading" class="loading-state" style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);">
+      <div class="spinner"></div>
+      <span class="text-muted">Visualizing memory...</span>
+    </div>
+
+    <!-- Empty State -->
+    <div id="graph-empty" class="hidden" style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); text-align:center;">
+      <p class="text-muted mb-2">Your graph is empty.</p>
+      <a href="/static/dashboard.html" class="btn btn-secondary btn-sm">Go interact with AI to build it</a>
+    </div>
+
+    <!-- Node Detail Panel -->
+    <div id="node-detail" class="node-detail card">
+      <h3 id="node-title" style="font-size: 1rem; margin-bottom: 4px;">Node</h3>
+      <div id="node-type" style="font-size: 0.75rem; color: var(--accent); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px;">Type</div>
+      <div id="node-attrs" style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5;"></div>
+    </div>
+
+  </div>
+
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script src="/static/js/api.js" defer></script>
+  <script src="/static/js/graph.js" defer></script>
+</body>
+</html>

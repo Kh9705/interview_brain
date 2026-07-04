@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mock Interview — Interview Brain</title>
+  <meta name="description" content="AI-powered mock interview with real-time camera, voice recognition, and instant feedback.">
+  <link rel="stylesheet" href="/static/css/style.css">
+  <style>
+    .mock-header {
+      padding-top: 16px;
+      animation: slideUp 0.4s ease;
+    }
+    .mock-header h1 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-top: 8px;
+    }
+    .mock-header .subtitle {
+      font-size: 0.9rem;
+      margin-top: 4px;
+    }
+    .setup-card {
+      margin-top: 24px;
+      animation: slideUp 0.5s ease;
+    }
+    .setup-card h3 {
+      font-weight: 600;
+      margin-bottom: 20px;
+    }
+    .interview-progress {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+    }
+    .controls-row {
+      display: flex;
+      gap: 12px;
+      margin-top: 16px;
+    }
+    .feedback-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .feedback-text {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+    .loading-wrapper {
+      flex-direction: column;
+      padding: 60px;
+    }
+    .loading-wrapper .spinner {
+      width: 40px;
+      height: 40px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="mock-container" style="min-height: 100vh;">
+
+    <!-- Header -->
+    <div class="mock-header">
+      <a href="/static/dashboard.html" style="font-size: 0.9rem;">&larr; Back to Dashboard</a>
+      <h1>Mock Interview</h1>
+      <p class="text-muted subtitle">
+        Real-time AI-powered interview with camera and voice
+      </p>
+    </div>
+
+    <!-- Setup Phase -->
+    <div id="setup-phase" class="card setup-card">
+      <h3>Configure Your Interview</h3>
+
+      <div class="form-group">
+        <label class="form-label" for="mock-company">Company</label>
+        <select class="form-input" id="mock-company"></select>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="mock-num-questions">Number of Questions</label>
+        <select class="form-input" id="mock-num-questions">
+          <option value="3">3 Questions (Quick)</option>
+          <option value="5" selected>5 Questions (Standard)</option>
+          <option value="7">7 Questions (Thorough)</option>
+        </select>
+      </div>
+
+      <button class="btn btn-primary btn-lg btn-block" id="start-interview-btn" onclick="Mock.startInterview()">
+        Start Interview
+      </button>
+    </div>
+
+    <!-- Interview Phase -->
+    <div id="interview-phase" class="hidden">
+
+      <!-- Camera Feed -->
+      <div class="camera-feed" id="camera-container">
+        <video id="camera-video" autoplay muted playsinline></video>
+        <div class="camera-overlay">
+          <span class="camera-badge badge-live">LIVE</span>
+          <span class="camera-badge badge-rec hidden" id="rec-badge">REC</span>
+        </div>
+      </div>
+
+      <!-- Progress -->
+      <div class="interview-progress">
+        <span id="question-counter">Question 1 / 5</span>
+        <span id="company-label"></span>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill" id="progress-fill" style="width: 0%;"></div>
+      </div>
+
+      <!-- Question Card -->
+      <div class="card question-card" id="question-card">
+        <div class="question-label">Interview Question</div>
+        <div class="question-text" id="question-text">Loading question...</div>
+        <div class="ai-speaking hidden" id="ai-speaking">
+          <span>AI is speaking</span>
+          <div class="dots"><span></span><span></span><span></span></div>
+        </div>
+      </div>
+
+      <!-- Answer Area -->
+      <div class="answer-area">
+        <div class="recording-indicator hidden" id="recording-indicator">
+          <span class="rec-dot"></span>
+          <span>Listening to your answer...</span>
+        </div>
+        <textarea class="form-input" id="answer-textarea"
+                  placeholder="Type your answer here, or use voice input..."
+                  rows="4"></textarea>
+      </div>
+
+      <!-- Controls -->
+      <div class="controls-row">
+        <button class="btn btn-secondary" id="mic-btn" onclick="Mock.toggleMic()" style="flex: 0 0 auto;">
+          Start Voice
+        </button>
+        <button class="btn btn-primary btn-lg" id="submit-answer-btn" onclick="Mock.submitAnswer()" style="flex: 1;">
+          Submit Answer
+        </button>
+      </div>
+
+      <!-- Feedback Card -->
+      <div class="card hidden" id="feedback-card" style="margin-top: 16px;">
+        <div class="feedback-header">
+          <div class="q-score" id="feedback-score">?</div>
+          <div>
+            <strong>Score</strong>
+            <span class="text-muted" style="font-size: 0.85rem;"> / 10</span>
+          </div>
+        </div>
+        <p id="feedback-text" class="feedback-text"></p>
+        <button class="btn btn-primary mt-2" id="next-question-btn" onclick="Mock.nextQuestion()">
+          Next Question
+        </button>
+      </div>
+    </div>
+
+    <!-- Loading Phase -->
+    <div id="loading-phase" class="hidden">
+      <div class="loading-state loading-wrapper">
+        <div class="spinner"></div>
+        <p class="text-muted mt-2">Generating interview questions...</p>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="/static/js/api.js?v=2" defer></script>
+  <script src="/static/js/mock.js?v=2" defer></script>
+</body>
+</html>

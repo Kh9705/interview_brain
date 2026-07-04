@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Account — Interview Brain</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+  <style>
+    .step-icon {
+      width: 40px; height: 40px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      background: var(--accent-glow); color: var(--accent);
+      font-weight: 700; font-size: 1.2rem; margin-bottom: 16px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="page-center">
+    <div class="card-strong auth-card">
+      <a href="/static/index.html" class="text-muted" style="font-size: 0.85rem;">&larr; Back home</a>
+
+      <div class="mt-3 mb-2">
+        <h1 style="font-size: 1.6rem; font-weight: 700;">Create Account</h1>
+        <p class="text-muted" style="font-size: 0.9rem;">4 quick steps to personalize your prep</p>
+      </div>
+
+      <div class="step-indicator">
+        <div class="step-dot active" id="dot-1"></div>
+        <div class="step-dot" id="dot-2"></div>
+        <div class="step-dot" id="dot-3"></div>
+        <div class="step-dot" id="dot-4"></div>
+      </div>
+
+      <form id="register-form">
+        <!-- Step 1 -->
+        <div class="step active" id="step-1">
+          <div class="step-icon">1</div>
+          <h3 class="step-title">Basic Info</h3>
+          <div class="form-group">
+            <label class="form-label" for="reg-name">Full Name</label>
+            <input class="form-input" type="text" id="reg-name" placeholder="John Doe" required autocomplete="name">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="reg-email">Email</label>
+            <input class="form-input" type="email" id="reg-email" placeholder="you@example.com" required autocomplete="email">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="reg-password">Password</label>
+            <input class="form-input" type="password" id="reg-password" placeholder="Min. 6 characters" required minlength="6" autocomplete="new-password">
+          </div>
+          <div class="step-nav">
+            <button type="button" class="btn btn-primary btn-block" data-next>Continue &rarr;</button>
+          </div>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="step" id="step-2">
+          <div class="step-icon">2</div>
+          <h3 class="step-title">Target Roles</h3>
+          <p class="text-muted mb-2" style="font-size: 0.85rem;">Select all that apply</p>
+          <div class="check-group" style="flex-direction: column;">
+            <label class="check-item"><input type="checkbox" name="role" value="SDE"><span class="check-dot"></span>Software Development Engineer (SDE)</label>
+            <label class="check-item"><input type="checkbox" name="role" value="ML Engineer"><span class="check-dot"></span>ML Engineer</label>
+            <label class="check-item"><input type="checkbox" name="role" value="AI Engineer"><span class="check-dot"></span>AI Engineer</label>
+            <label class="check-item"><input type="checkbox" name="role" value="Data Scientist"><span class="check-dot"></span>Data Scientist</label>
+            <label class="check-item"><input type="checkbox" name="role" value="Backend Developer"><span class="check-dot"></span>Backend Developer</label>
+            <label class="check-item"><input type="checkbox" name="role" value="Frontend Developer"><span class="check-dot"></span>Frontend Developer</label>
+            <label class="check-item"><input type="checkbox" name="role" value="DevOps Engineer"><span class="check-dot"></span>DevOps Engineer</label>
+          </div>
+          <div class="step-nav">
+            <button type="button" class="btn btn-ghost" data-back>&larr; Back</button>
+            <button type="button" class="btn btn-primary" data-next style="flex:1;">Continue &rarr;</button>
+          </div>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="step" id="step-3">
+          <div class="step-icon">3</div>
+          <h3 class="step-title">Target Companies</h3>
+          <p class="text-muted mb-2" style="font-size: 0.85rem;">Pick your targets</p>
+          <div class="check-group">
+            <label class="check-item"><input type="checkbox" name="company" value="Google"><span class="check-dot"></span>Google</label>
+            <label class="check-item"><input type="checkbox" name="company" value="Microsoft"><span class="check-dot"></span>Microsoft</label>
+            <label class="check-item"><input type="checkbox" name="company" value="Amazon"><span class="check-dot"></span>Amazon</label>
+            <label class="check-item"><input type="checkbox" name="company" value="Meta"><span class="check-dot"></span>Meta</label>
+            <label class="check-item"><input type="checkbox" name="company" value="Apple"><span class="check-dot"></span>Apple</label>
+            <label class="check-item"><input type="checkbox" name="company" value="Netflix"><span class="check-dot"></span>Netflix</label>
+            <label class="check-item"><input type="checkbox" name="company" value="Flipkart"><span class="check-dot"></span>Flipkart</label>
+            <label class="check-item"><input type="checkbox" name="company" value="Cognee"><span class="check-dot"></span>Cognee</label>
+          </div>
+          <div class="form-group mt-2">
+            <div id="custom-company-tags" class="mb-2" style="display: flex; flex-wrap: wrap; gap: 8px;"></div>
+            <input class="form-input" type="text" id="custom-company" placeholder="+ Type company name and press Enter...">
+          </div>
+          <div class="step-nav">
+            <button type="button" class="btn btn-ghost" data-back>&larr; Back</button>
+            <button type="button" class="btn btn-primary" data-next style="flex:1;">Continue &rarr;</button>
+          </div>
+        </div>
+
+        <!-- Step 4 -->
+        <div class="step" id="step-4">
+          <div class="step-icon">4</div>
+          <h3 class="step-title">Weak Areas</h3>
+          <p class="text-muted mb-2" style="font-size: 0.85rem;">Where do you need work?</p>
+          <div class="check-group">
+            <label class="check-item"><input type="checkbox" name="weak_area" value="System Design"><span class="check-dot"></span>System Design</label>
+            <label class="check-item"><input type="checkbox" name="weak_area" value="DSA"><span class="check-dot"></span>DSA</label>
+            <label class="check-item"><input type="checkbox" name="weak_area" value="ML Design"><span class="check-dot"></span>ML Design</label>
+            <label class="check-item"><input type="checkbox" name="weak_area" value="SQL"><span class="check-dot"></span>SQL</label>
+            <label class="check-item"><input type="checkbox" name="weak_area" value="NLP"><span class="check-dot"></span>NLP</label>
+            <label class="check-item"><input type="checkbox" name="weak_area" value="Statistics"><span class="check-dot"></span>Statistics</label>
+            <label class="check-item"><input type="checkbox" name="weak_area" value="Computer Networks"><span class="check-dot"></span>Computer Networks</label>
+            <label class="check-item"><input type="checkbox" name="weak_area" value="OS"><span class="check-dot"></span>OS</label>
+            <label class="check-item"><input type="checkbox" name="weak_area" value="DBMS"><span class="check-dot"></span>DBMS</label>
+          </div>
+          <div class="step-nav mt-3">
+            <button type="button" class="btn btn-ghost" data-back>&larr; Back</button>
+            <button type="submit" class="btn btn-primary btn-lg" style="flex:1;" id="register-submit">
+              Create Account
+            </button>
+          </div>
+        </div>
+      </form>
+
+      <p class="text-center mt-3" style="font-size: 0.9rem;">
+        Already have an account? <a href="/static/login.html">Sign in &rarr;</a>
+      </p>
+    </div>
+  </div>
+
+  <script src="/static/js/api.js" defer></script>
+  <script src="/static/js/auth.js" defer></script>
+</body>
+</html>

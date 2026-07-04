@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign In — Interview Brain</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+  <style>
+    .login-page {
+      min-height: 100vh; display: flex;
+    }
+    .login-left {
+      flex: 1; display: flex; align-items: center; justify-content: center;
+      padding: 40px;
+    }
+    .login-right {
+      flex: 1; display: none; align-items: center; justify-content: center;
+      padding: 60px;
+      background: var(--bg-secondary);
+      border-left: 1px solid var(--border);
+    }
+    @media (min-width: 900px) {
+      .login-right { display: flex; }
+    }
+    .login-features { max-width: 360px; }
+    .login-feature {
+      display: flex; align-items: flex-start; gap: 14px;
+      padding: 16px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .login-feature:last-child { border-bottom: none; }
+    .login-feature-icon {
+      width: 40px; height: 40px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem; flex-shrink: 0;
+      background: var(--accent-glow); color: var(--accent);
+      font-weight: 700;
+    }
+    .divider {
+      display: flex; align-items: center; gap: 12px; margin: 20px 0;
+      color: var(--text-muted); font-size: 0.8rem;
+    }
+    .divider::before, .divider::after {
+      content: ''; flex: 1; height: 1px; background: var(--border);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="login-page">
+    <div class="login-left">
+      <div class="card-strong auth-card">
+        <a href="/static/index.html" class="text-muted" style="font-size: 0.85rem;">&larr; Back home</a>
+        <div class="mt-3 mb-2">
+          <h1 style="font-size: 1.6rem; font-weight: 700;">Welcome back</h1>
+          <p class="text-muted" style="font-size: 0.9rem;">Sign in to your account</p>
+        </div>
+
+        <form id="login-form">
+          <div class="form-group">
+            <label class="form-label" for="login-email">Email</label>
+            <input class="form-input" type="email" id="login-email" placeholder="you@example.com" required autocomplete="email">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="login-password">Password</label>
+            <input class="form-input" type="password" id="login-password" placeholder="••••••••" required autocomplete="current-password">
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-block btn-lg" id="login-submit">
+            Sign In &rarr;
+          </button>
+        </form>
+
+        <div class="divider">or</div>
+
+        <a href="/static/register.html" class="btn btn-secondary btn-block">
+          Create an account
+        </a>
+      </div>
+    </div>
+
+    <div class="login-right">
+      <div class="login-features">
+        <h3 style="font-size: 1.2rem; font-weight: 600; margin-bottom: 8px;">Your workspace</h3>
+        <p class="text-muted mb-3" style="font-size: 0.9rem;">Everything you've built is here.</p>
+
+        <div class="login-feature">
+          <div class="login-feature-icon">K</div>
+          <div>
+            <h4 style="font-size: 0.95rem; font-weight: 600;">Skill Map</h4>
+            <p class="text-secondary" style="font-size: 0.82rem;">Your skills and targets mapped out.</p>
+          </div>
+        </div>
+        <div class="login-feature">
+          <div class="login-feature-icon">M</div>
+          <div>
+            <h4 style="font-size: 0.95rem; font-weight: 600;">Mock History</h4>
+            <p class="text-secondary" style="font-size: 0.82rem;">Past scores and feedback trends.</p>
+          </div>
+        </div>
+        <div class="login-feature">
+          <div class="login-feature-icon">R</div>
+          <div>
+            <h4 style="font-size: 0.95rem; font-weight: 600;">Roadmaps</h4>
+            <p class="text-secondary" style="font-size: 0.82rem;">Personalized day-by-day study plans.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/static/js/api.js" defer></script>
+  <script src="/static/js/auth.js" defer></script>
+</body>
+</html>
